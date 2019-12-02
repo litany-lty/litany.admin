@@ -1,6 +1,6 @@
 package cn.litany.admin.service;
 
-import cn.litany.admin.dto.BlogManager;
+import cn.litany.admin.dto.blog.BlogManager;
 /**
  * 处理正式文件区的文件（正式版本的文件）
  * @author Litany

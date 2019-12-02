@@ -1,7 +1,7 @@
 package cn.litany.admin.service;
 
 
-import cn.litany.admin.dto.BlogManager;
+import cn.litany.admin.dto.blog.BlogManager;
 
 /**
  * @author Litany

@@ -1,4 +1,4 @@
-package cn.litany.admin.dto;
+package cn.litany.admin.dto.blog;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

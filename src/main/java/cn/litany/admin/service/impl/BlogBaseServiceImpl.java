@@ -1,11 +1,9 @@
 package cn.litany.admin.service.impl;
 
-import cn.litany.admin.dto.Blog;
-import cn.litany.admin.dto.BlogManager;
-import cn.litany.admin.dto.Top;
+import cn.litany.admin.dto.blog.BlogManager;
+import cn.litany.admin.dto.blog.Top;
 import cn.litany.admin.service.BlogBaseService;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
