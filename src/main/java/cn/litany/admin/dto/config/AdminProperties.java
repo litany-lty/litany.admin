@@ -1,5 +1,6 @@
 package cn.litany.admin.dto.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.annotation.PostConstruct;
@@ -8,19 +9,24 @@ import javax.annotation.PostConstruct;
  * @author Litany
  */
 @ConfigurationProperties(prefix = "spring.admin")
+@ConditionalOnProperty(prefix = "spring.admin", name = "enabled", matchIfMissing = true)
 public class AdminProperties {
-    private String blogOfficialFilePath;
-    @PostConstruct
-    public void init()
-    {
-        System.out.println(blogOfficialFilePath);
+    private String username;
+    private String githubSshKey;
+
+    public String getUsername() {
+        return username;
     }
 
-    public String getBlogOfficialFilePath() {
-        return blogOfficialFilePath;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setBlogOfficialFilePath(String blogOfficialFilePath) {
-        this.blogOfficialFilePath = blogOfficialFilePath;
+    public String getGithubSshKey() {
+        return githubSshKey;
+    }
+
+    public void setGithubSshKey(String githubSshKey) {
+        this.githubSshKey = githubSshKey;
     }
 }

@@ -9,12 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Litany
  */
 @Configuration
-@EnableConfigurationProperties(AdminProperties.class)
-@ConditionalOnProperty(prefix = "spring.admin", name = "enabled", matchIfMissing = true)
-public class AdminConfiguration extends BlogConfiguration{
-
-    @Autowired
-    private AdminProperties adminProperties;
-
+@EnableConfigurationProperties({AdminProperties.class,BlogProperties.class})
+public class AdminConfiguration{
 
 }

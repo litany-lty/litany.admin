@@ -5,6 +5,7 @@ import cn.litany.admin.dto.blog.BlogManager;
 import cn.litany.admin.dto.blog.Top;
 import cn.litany.admin.service.BlogBaseService;
 import cn.litany.admin.service.BlogDraftService;
+import cn.litany.admin.util.ConfigUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,21 +19,16 @@ public class BlogDraftServiceImpl implements BlogDraftService {
     @Autowired
     BlogBaseService blogBaseService;
 
-    @Value("${BlogDraftFilePath}")
-    private String draftFilePath;
-
-    @Value("${blogOfficialFilePath}")
-    private String blogOfficialFilePath;
 
     @Override
     public boolean createDraft(BlogManager bm) {
-        bm.setPath(draftFilePath);
+        bm.setPath(ConfigUtil.getUserDraftPath(bm.getUsername()));
         return blogBaseService.createBlogFile(bm);
     }
 
     @Override
     public boolean updateDraft(BlogManager bm) {
-        bm.setPath(draftFilePath);
+        bm.setPath(ConfigUtil.getUserDraftPath(bm.getUsername()));
         return blogBaseService.updateBlogFile(bm);
     }
 
@@ -43,9 +39,7 @@ public class BlogDraftServiceImpl implements BlogDraftService {
 
     @Override
     public boolean moveToOfficial(BlogManager bm) {
-        Blog blog = bm.getBlog();
-        Top top = blog.getTop();
-
-        return blogBaseService.moveFile(bm,blogOfficialFilePath);
+        bm.setPath(ConfigUtil.getUserOfficialPath(bm.getUsername()));
+        return blogBaseService.moveFile(bm,ConfigUtil.getUserOfficialPath(bm.getUsername()));
     }
 }

@@ -5,9 +5,18 @@ package cn.litany.admin.dto.blog;
  * @author Litany
  */
 public class BlogManager {
+    private String username;
     private Blog blog;
     private String path;
     private String status;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Blog getBlog() {
         return blog;

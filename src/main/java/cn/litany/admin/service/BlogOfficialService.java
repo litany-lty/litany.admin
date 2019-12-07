@@ -22,7 +22,7 @@ public interface BlogOfficialService {
     boolean copyToDraft(BlogManager bm);
 
     /**
-     * 将正式区的文件从发布区移除
+     * 将正式区的文件从发布区移除(实际上移动到了草稿区)
      * @param bm 博客管理员
      * @return 执行结果
      * */
