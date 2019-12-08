@@ -55,7 +55,7 @@ public class GitUtil {
             File dir = new File(ConfigUtil.getUserOfficialPath(username));
             Git git = Git.open(dir);
             git.add().addFilepattern(".").call();
-            git.commit().setMessage(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:ss:mm") + "Auto update").call();
+            git.commit().setMessage(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:ss:mm") +" ["+username+ "] Auto update").call();
             PushCommand push = git.push();
             push.setTransportConfigCallback(SshConfig.getSsh(keyPath));
             push.call();
