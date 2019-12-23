@@ -1,6 +1,10 @@
 package cn.litany.admin.dto.blog;
 
 
+import cn.litany.admin.util.ConfigUtil;
+import org.apache.commons.lang.StringUtils;
+import static cn.litany.admin.constant.BlogConstant.*;
+
 /**
  * @author Litany
  */
@@ -21,6 +25,7 @@ public class BlogManager {
     public Blog getBlog() {
         return blog;
     }
+
     public String getBlogContext() {
         return blog.getBlog();
     }
@@ -43,5 +48,17 @@ public class BlogManager {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isDraft() {
+        String separator = ConfigUtil.getSeparator();
+        String[] split = path.split(TM+separator);
+        String s = split[split.length - 1];
+        return StringUtils.containsIgnoreCase(s,DRAFT);
+    }
+
+    public String getFileName(){
+        Top top = this.blog.getTop();
+        return  (top.getDate()) + AND + (top.getTitle()) + (MARKDOWN_TYPE);
     }
 }

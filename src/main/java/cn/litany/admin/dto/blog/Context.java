@@ -2,6 +2,8 @@ package cn.litany.admin.dto.blog;
 
 import org.apache.commons.lang.StringUtils;
 
+import static cn.litany.admin.constant.BlogConstant.*;
+
 /**
  * @author Litany
  */
@@ -11,7 +13,6 @@ public class Context {
 
     private String content;
 
-    private static final String MARK = "> ";
 
     public String getNote() {
         if (StringUtils.isBlank(note)) {
@@ -29,7 +30,7 @@ public class Context {
 
     public String getContent() {
         if (StringUtils.isBlank(content)) {
-            return "# 简述";
+            return DEFAULT_CONTENT;
         }
         return content;
     }

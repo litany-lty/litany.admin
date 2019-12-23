@@ -3,26 +3,29 @@ package cn.litany.admin.service.impl;
 import cn.litany.admin.dto.blog.BlogManager;
 import cn.litany.admin.dto.blog.Top;
 import cn.litany.admin.service.BlogBaseService;
+import cn.litany.admin.util.ConfigUtil;
+import cn.litany.admin.util.GitUtil;
 import org.apache.commons.io.FileUtils;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
 
+import static cn.litany.admin.constant.BlogConstant.*;
+
 /**
  * @author Litany
  */
-@Service
 public class BlogBaseServiceImpl implements BlogBaseService {
 
-    private final static String SEP_A = "/";
-    private final static String SEP_B = "//";
-    private final static String SEP_C = "\\\\";
-    private final static String SEP_D = "\\";
-    private final static String SEPARATOR = "file.separator";
-    private final static String AND = "-";
-    private final static String MARKDOWN_TYPE = ".md";
-    private final static String ENCODING = "UTF-8";
+
+
+    @Autowired
+    protected ConfigUtil configUtil;
+
+    @Autowired
+    protected GitUtil gitUtil;
+
 
     @Override
     public boolean createBlogFile(BlogManager bm) {
@@ -31,9 +34,10 @@ public class BlogBaseServiceImpl implements BlogBaseService {
 
     @Override
     public boolean updateBlogFile(BlogManager bm) {
-        File file = new File(bm.getPath());
-        if (file.exists()){
-            file.delete();
+        if (!bm.isDraft()) {
+            String userDraftPath = configUtil.getUserDraftPath(bm.getUsername());
+            copyAndMoveFile(bm, userDraftPath);
+            bm.setPath(userDraftPath);
         }
         return writeToFile(bm);
     }
@@ -49,37 +53,31 @@ public class BlogBaseServiceImpl implements BlogBaseService {
             String srcPath = getFilePath(bm);
             bm.setPath(filePath);
             String destinationPath = getFilePath(bm);
-            FileUtils.moveFile(new File(srcPath),new File(destinationPath));
+            File destFile = new File(destinationPath);
+            if (destFile.exists() && destFile.isFile()) {
+                destFile.delete();
+            }
+            FileUtils.moveFile(new File(srcPath), destFile);
             return true;
         } catch (IOException e) {
-           return false;
+            return false;
         }
     }
 
     private String getFilePath(BlogManager bm) {
         String path = bm.getPath();
-        String[] routes = new String[0];
-        if (path.contains(SEP_A)) {
-            routes = path.split(SEP_A);
-        } else if (path.contains(SEP_B)) {
-            routes = path.split(SEP_B);
-        } else if (path.contains(SEP_D)) {
-            routes = path.split(SEP_C);
-        }
-        StringBuilder newPath = new StringBuilder();
-        for (String route : routes) {
-            newPath.append(route).append(System.getProperty(SEPARATOR));
+        String newPath = ConfigUtil.getPath(path);
+        if (new File(newPath).isFile()) {
+            return newPath;
         }
         Top top = bm.getBlog().getTop();
-        newPath.append(top.getDate()).append(AND).append(top.getTitle()).append(MARKDOWN_TYPE);
-        return newPath.toString();
-
+        return newPath + (top.getDate()) + (AND) + (top.getTitle()) + (MARKDOWN_TYPE);
     }
 
     private boolean writeToFile(BlogManager bm) {
         String filePath = getFilePath(bm);
         try {
-            FileUtils.write(new File(filePath), bm.getBlogContext(),ENCODING , false);
+            FileUtils.write(new File(filePath), bm.getBlogContext(), ENCODING, false);
             return true;
         } catch (IOException e) {
             return false;
@@ -91,8 +89,12 @@ public class BlogBaseServiceImpl implements BlogBaseService {
         String srcPath = getFilePath(bm);
         bm.setPath(filePath);
         String destinationPath = getFilePath(bm);
+        File file = new File(destinationPath);
+        if (file.exists() && file.isFile()) {
+            file.delete();
+        }
         try {
-            FileUtils.copyFile(new File(srcPath),new File(destinationPath));
+            FileUtils.copyFile(new File(srcPath), new File(destinationPath));
             return true;
         } catch (IOException e) {
             return false;

@@ -2,6 +2,7 @@ package cn.litany.admin.dto.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
@@ -10,6 +11,7 @@ import javax.annotation.PostConstruct;
  */
 @ConfigurationProperties(prefix = "spring.blog")
 @ConditionalOnProperty(prefix ="spring.blog" ,name = "enabled", matchIfMissing = true)
+@Component
 public class BlogProperties {
     private String filePath;
     private String officialFilePath;

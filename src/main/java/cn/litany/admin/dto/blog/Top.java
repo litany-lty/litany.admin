@@ -2,6 +2,9 @@ package cn.litany.admin.dto.blog;
 
 import org.apache.commons.lang.StringUtils;
 
+import static cn.litany.admin.constant.BlogConstant.SPLIT1;
+import static cn.litany.admin.constant.BlogConstant.SPLIT2;
+
 /**
  * @author Litany
  */
@@ -12,7 +15,7 @@ public class Top {
     private String author;
     private String headerImg;
     private String tags;
-    private final static String SPLIT = ",";
+
 
     private String[] getAllTag() {
         String[] tags;
@@ -20,8 +23,10 @@ public class Top {
         if (StringUtils.isBlank(tag)) {
             return null;
         }
-        if (tag.contains(SPLIT)) {
-            tags = tag.split(SPLIT);
+        if (tag.contains(SPLIT1)) {
+            tags = tag.split(SPLIT1);
+        } else if (tag.contains(SPLIT2)) {
+            tags = tag.split(SPLIT2);
         } else {
             tags = new String[]{tag};
         }
@@ -47,7 +52,7 @@ public class Top {
                 "author:     " + author + "\n" +
                 "header-img: " + headerImg + "\n" +
                 "catalog: true\n" +
-                "tags:" +  tags +"\n"+
+                "tags:" + tags + "\n" +
                 "---";
     }
 

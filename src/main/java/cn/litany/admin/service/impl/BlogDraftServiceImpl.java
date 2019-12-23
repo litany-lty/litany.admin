@@ -1,45 +1,40 @@
 package cn.litany.admin.service.impl;
 
-import cn.litany.admin.dto.blog.Blog;
 import cn.litany.admin.dto.blog.BlogManager;
-import cn.litany.admin.dto.blog.Top;
-import cn.litany.admin.service.BlogBaseService;
 import cn.litany.admin.service.BlogDraftService;
-import cn.litany.admin.util.ConfigUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
  * @author Litany
  */
 @Service
-public class BlogDraftServiceImpl implements BlogDraftService {
-
-    @Autowired
-    BlogBaseService blogBaseService;
+public class BlogDraftServiceImpl extends BlogBaseServiceImpl implements BlogDraftService {
 
 
     @Override
     public boolean createDraft(BlogManager bm) {
-        bm.setPath(ConfigUtil.getUserDraftPath(bm.getUsername()));
-        return blogBaseService.createBlogFile(bm);
+        bm.setPath(configUtil.getUserDraftPath(bm.getUsername()));
+        return super.createBlogFile(bm);
     }
 
     @Override
     public boolean updateDraft(BlogManager bm) {
-        bm.setPath(ConfigUtil.getUserDraftPath(bm.getUsername()));
-        return blogBaseService.updateBlogFile(bm);
+        if (!bm.isDraft()){
+            String userDraftPath = configUtil.getUserDraftPath(bm.getUsername());
+            copyAndMoveFile(bm, userDraftPath);
+            bm.setPath(userDraftPath);
+        }
+        return super.updateBlogFile(bm);
     }
 
     @Override
     public boolean deleteDraft(BlogManager bm) {
-        return blogBaseService.deleteBlogFile(bm);
+        return super.deleteBlogFile(bm);
     }
 
     @Override
     public boolean moveToOfficial(BlogManager bm) {
-        bm.setPath(ConfigUtil.getUserOfficialPath(bm.getUsername()));
-        return blogBaseService.moveFile(bm,ConfigUtil.getUserOfficialPath(bm.getUsername()));
+        bm.setPath(configUtil.getUserDraftPath(bm.getUsername()));
+        return super.moveFile(bm,configUtil.getUserOfficialPath(bm.getUsername()));
     }
 }

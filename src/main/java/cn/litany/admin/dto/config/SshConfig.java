@@ -16,6 +16,8 @@ import java.io.File;
  * @author Litany
  */
 public class SshConfig  {
+    private static String USER_HOME = System.getProperty("user.home");
+    private final static String SEPARATOR = System.getProperty("file.separator");
 
     public static TransportConfigCallback getSsh(String sshKeyPath){
         return new TransportConfigCallback() {
@@ -49,6 +51,8 @@ public class SshConfig  {
             jsch.removeAllIdentity();
             new File(sshKeyFilePath).setReadable(true);
             jsch.addIdentity(sshKeyFilePath);
+//            jsch.setKnownHosts(USER_HOME+SEPARATOR+".ssh"+SEPARATOR+"known_hosts");
+
 //  todo    jsch.setKnownHosts("C:\\Users\\wb-lty594074\\.ssh\\known_hosts");
             return jsch;
         }

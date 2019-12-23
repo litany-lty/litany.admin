@@ -9,14 +9,15 @@ public class Blog {
     private String title;
     private Top top;
     private Context context;
-    private Boolean isUpload;
+    private int index;
 
-    public Boolean getUpload() {
-        return isUpload;
+
+    public int getIndex() {
+        return index;
     }
 
-    public void setUpload(Boolean upload) {
-        isUpload = upload;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getTitle() {
@@ -67,7 +68,14 @@ public class Blog {
                 "title='" + title + '\'' +
                 ", top=" + top +
                 ", context=" + context +
-                ", isUpload=" + isUpload +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Blog blog = (Blog) o;
+        return this.toString().equalsIgnoreCase(blog.toString());
     }
 }
