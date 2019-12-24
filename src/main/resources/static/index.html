@@ -66,20 +66,36 @@
 <div class="blog-masthead">
     <div class="container">
         <nav class="blog-nav">
-            <a class="blog-nav-item active" href="#">Home</a>
-            <a class="blog-nav-item" href="#">New features</a>
-            <a class="blog-nav-item" href="#">Press</a>
-            <a class="blog-nav-item" href="#">New hires</a>
-            <a class="blog-nav-item" href="#">About</a>
+            <button class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" type="button" onclick="fadein()"
+                    aria-expanded="false" aria-label="Toggle docs navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img"
+                     focusable="false"><title>Menu</title>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"
+                          d="M4 7h22M4 15h22M4 23h22"></path>
+                </svg>
+            </button>
+            <a class="blog-nav-item active" id="index" href="index.html">Home</a>
+            <a class="blog-nav-item" id="blogPage" href="javascript:;">Blog</a>
+            <a class="blog-nav-item" id="about-me" href="javascript:;">About</a>
         </nav>
     </div>
 </div>
-<div class="col-md-3 col-xl-2 bd-sidebar left-box" id="look" style="padding-top:20px;max-width:18%;position:fixed">
-    <form role="search" id="select" class="bd-search d-flex align-items-center form" hidden="hidden">
+<div class="blog-page">
+    <div class="col-md-3 col-xl-2 bd-sidebar left-box" id="look" style="padding-top:20px;max-width:18%;position:fixed">
+        <form role="search" id="select" class="bd-search d-flex align-items-center form" hidden="hidden">
+
         <span class="algolia-autocomplete"
-              style="position: relative; display: inline-block; direction: ltr;"><input
-                type="search" class="form-control ds-input" id="search-input" placeholder="Search..."
-                style="position: relative; vertical-align: top;width: 97%">
+              style="position: relative; display: inline-block; direction: ltr;">
+        <div style="position: relative; ">
+            <input
+                    type="text" class="form-control" id="search-input" autocomplete="off"
+                    onkeydown="if(event.keyCode===13){return false;}"
+                    onsubmit="return false;" placeholder="Search..."
+                    style="position: relative; vertical-align: top;width: 80%">
+            <button type="button" class="btn btn-default" onclick="searchBack()"
+                    style="position:absolute;top:1px;right: 5px">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+            </button></div>
         <nav style="padding-top: 5px" id="bd-docs-nav" aria-label="Main navigation">
                 <ul class="container-fluid" style="width:auto;padding-top: 5px;border-right:2px solid #2aabd2">
                  <div class="nav">
@@ -88,7 +104,7 @@
                     </li>
 
                     <li>
-                        <a class="bd-toc-link" id="tagBlog" href="javascript:;">标签分类</a>
+                        <a class="bd-toc-link" onclick="tagBlog()" href="javascript:;">标签分类</a>
                     </li>
                  </div>
                 </ul>
@@ -96,83 +112,83 @@
 
         </nav>
          </span>
-    </form>
-</div>
-
-<div class="container">
-
-    <div class="blog-header">
-        <h1 class="blog-title">The Bootstrap Blog</h1>
-        <p class="lead blog-description" id="subtitle">The official example template of creating a blog with
-            Bootstrap.</p>
+        </form>
     </div>
 
-    <div class="row">
+    <div class="container">
 
-        <div class="col-sm-8 blog-main">
+        <div class="blog-header">
+            <h1 class="blog-title">The Bootstrap Blog</h1>
+            <p class="lead blog-description" id="subtitle">The official example template of creating a blog with
+                Bootstrap.</p>
+        </div>
 
-            <div class="blog-post">
-                <h2 class="blog-post-title">Sample blog post</h2>
+        <div class="row">
 
-                <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
-                <br>
-                <div id="blogContent">
+            <div class="col-sm-8 blog-main">
+
+                <div class="blog-post">
+                    <h2 class="blog-post-title">Sample blog post</h2>
+
+                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+                    <br>
+                    <div id="blogContent">
+
+
+                    </div><!-- /.blog-post -->
 
 
                 </div><!-- /.blog-post -->
 
+                <nav>
+                    <ul class="pager">
+                        <li id="per"><a href="javascript:;">Previous</a></li>
+                        <li id="next"><a href="javascript:;">Next</a></li>
+                    </ul>
+                </nav>
 
-            </div><!-- /.blog-post -->
+            </div><!-- /.blog-main -->
 
-            <nav>
-                <ul class="pager">
-                    <li><a href="#">Previous</a></li>
-                    <li><a href="#">Next</a></li>
-                </ul>
-            </nav>
+            <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+                <div class="sidebar-module sidebar-module-inset">
+                    <p>
+                        漫漫寒風天地霜，<br>
+                        山窮盡時路尤長。<br>
+                        其修遠兮人何去？<br>
+                        求道終來見極光。<br>
+                    </p>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Newest</h4>
+                    <ol class="list-unstyled" id="newest" style="height: 240px;width: auto">
+                        <li><a id="findOffBlog" href="javascript:;">March 2014</a></li>
+                        <li><a href="#">February 2014</a></li>
+                        <li><a href="#">January 2014</a></li>
+                        <li><a href="#">December 2013</a></li>
+                        <li><a href="#">November 2013</a></li>
+                        <li><a href="#">October 2013</a></li>
+                        <li><a href="#">September 2013</a></li>
+                        <li><a href="#">August 2013</a></li>
+                        <li><a href="#">July 2013</a></li>
+                        <li><a href="#">June 2013</a></li>
+                        <li><a href="#">May 2013</a></li>
+                        <li><a href="#">April 2013</a></li>
+                    </ol>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Region</h4>
+                    <ol class="list-unstyled">
+                        <li><a onclick="region_click(this)" href="#">All</a></li>
+                        <li><a onclick="region_click(this)" href="#">Draft</a></li>
+                        <li><a onclick="region_click(this)" id="region" href="#">Official</a></li>
+                    </ol>
+                </div>
+            </div><!-- /.blog-sidebar -->
 
-        </div><!-- /.blog-main -->
+        </div><!-- /.row -->
 
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-            <div class="sidebar-module sidebar-module-inset">
-                <p>
-                    漫漫寒風天地霜，<br>
-                    山窮盡時路尤長。<br>
-                    其修遠兮人何去？<br>
-                    求道終來見極光。<br>
-                </p>
-            </div>
-            <div class="sidebar-module">
-                <h4>Newest</h4>
-                <ol class="list-unstyled" id="newest" style="height: 240px;width: auto">
-                    <li><a id="findOffBlog" href="javascript:;">March 2014</a></li>
-                    <li><a href="#">February 2014</a></li>
-                    <li><a href="#">January 2014</a></li>
-                    <li><a href="#">December 2013</a></li>
-                    <li><a href="#">November 2013</a></li>
-                    <li><a href="#">October 2013</a></li>
-                    <li><a href="#">September 2013</a></li>
-                    <li><a href="#">August 2013</a></li>
-                    <li><a href="#">July 2013</a></li>
-                    <li><a href="#">June 2013</a></li>
-                    <li><a href="#">May 2013</a></li>
-                    <li><a href="#">April 2013</a></li>
-                </ol>
-            </div>
-            <div class="sidebar-module">
-                <h4>Region</h4>
-                <ol class="list-unstyled">
-                    <li><a onclick="region_click(this)" href="#">All</a></li>
-                    <li><a onclick="region_click(this)" href="#">Draft</a></li>
-                    <li><a onclick="region_click(this)" id="region" href="#">Official</a></li>
-                </ol>
-            </div>
-        </div><!-- /.blog-sidebar -->
-
-    </div><!-- /.row -->
-
-</div><!-- /.container -->
-
+    </div><!-- /.container -->
+</div>
 <footer class="blog-footer">
     <p>Admin for <a href="http://getbootstrap.com">Litany.cn</a> by <a
             href="https://litany.cn">@Litany</a>.</p>
@@ -194,8 +210,13 @@
 
 <script>
 
+    let blogType;
     let blogList;
     let blogDateMap;
+    let blogDateList;
+    let blogTagMap;
+    let blogTagList;
+    let blogSearchList;
     let index;
     let region = "Official";
 
@@ -205,15 +226,26 @@
         $(v).attr("id", "region");
         region = v.text;
         load();
+        back();
+        fadeNow();
     }
 
-    function  back() {
+    function searchBack() {
+        back();
+        let key = $("#search-input").val();
+        if (key != null && key !== "") {
+            searchBlog(key)
+            blogType='search';
+        }
+    }
+
+    function back() {
         $(".nav").html("<li>\n" +
             "                        <a class=\"bd-toc-link\" onclick='dateBlog()'  href=\"javascript:;\">日期分类</a>\n" +
             "                    </li>\n" +
             "\n" +
             "                    <li>\n" +
-            "                        <a class=\"bd-toc-link\" id=\"tagBlog\" href=\"javascript:;\">标签分类</a>\n" +
+            "                        <a class=\"bd-toc-link\" onclick='tagBlog()' href=\"javascript:;\">标签分类</a>\n" +
             "                    </li>")
     }
 
@@ -224,15 +256,16 @@
             method: "GET",
             dataType: "json",
             success: function (data) {
+                blogType='new';
                 $("#newest").html("");
                 var str = "";
                 blogList = data;
                 $.each(data, function (n, v) {
-                    var title = v.title;
+                    let title = v.title;
+                    title = title.substring(11, title.length - 3);
                     if (n === 0) {
                         findBlog(title)
                     }
-                    title = title.substring(11, title.length - 3);
                     str += '<li ><a id="findBlog" href="javascript:;" onclick="findBlog(\'' + title + '\')">' + title + '</a></li>';
                 });
                 $("#newest").html(str);
@@ -240,19 +273,74 @@
         });
 
     }
-    function findBlogList(date){
-        let list =blogDateMap[date];
-        let str='';
-        $.each(list,function (n, v) {
-            str+='<li>\n' +
-                '                        <a class="bd-toc-link" onclick="findBlog('+v.title+')" href="javascript:;">'+v.title+'</a>\n' +
+
+    function findDateBlogList(v) {
+        blogType='date';
+        blogDateList = blogDateMap[v];
+        let str = '';
+        $.each(blogDateList, function (n, v) {
+            let blogName =v.title.substring(11,v.title.length-3);
+            str += '<li>\n' +
+                '                        <a class="bd-toc-link" onclick="findBlog(\'' + blogName + '\')" href="javascript:;">' + blogName + '</a>\n' +
                 '                    </li>'
         });
-        str+='<li>\n' +
-            '                        <a class="bd-toc-link" onclick="dateBlog()" href="javascript:;">返回上级</a>\n' +
-            '                    </li>'
         $(".nav").html(str)
 
+    }
+
+    function findTagBlogList(v) {
+        blogType='tag';
+        blogTagList = blogTagMap[v];
+        let str = '';
+        $.each(blogTagList, function (n, v) {
+            v = v.substring(11, v.length - 3)
+            str += '<li>\n' +
+                '                        <a class="bd-toc-link" onclick="findBlog(\'' + v.toString() + '\')" href="javascript:;">' + v + '</a>\n' +
+                '                    </li>'
+        });
+        $(".nav").html(str)
+
+    }
+
+
+    function searchBlog(key) {
+        $.ajax({
+            url: "searchBlog",
+            data: {region: region, key: key},
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                blogType='search';
+                blogSearchList = eval(data);
+                let str = '';
+                for (let n in blogSearchList) {
+                    let blogName = blogSearchList[n].title.substring(11, blogSearchList[n].title.length - 3)
+                    str += '<li>\n' +
+                        '                        <a class="bd-toc-link" onclick="findBlog(\'' + blogName + '\')" href="javascript:;">' + blogName + '</a>\n' +
+                        '                    </li>'
+                }
+                $(".nav").html(str)
+            }
+        });
+    }
+
+    function tagBlog() {
+        $.ajax({
+            url: "tagBlog",
+            data: {region: region},
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                blogTagMap = eval(data);
+                let str = '';
+                for (let key in blogTagMap) {
+                    str += '<li>\n' +
+                        '                        <a class="bd-toc-link" onclick="findTagBlogList(\'' + key + '\')" href="javascript:;">' + key + '</a>\n' +
+                        '                    </li>'
+                }
+                $(".nav").html(str)
+            }
+        });
     }
 
     function dateBlog() {
@@ -262,20 +350,77 @@
             method: "GET",
             dataType: "json",
             success: function (data) {
-                blogDateMap  = eval(data);
-                let str ='';
+                blogDateMap = eval(data);
+                let str = '';
                 for (let key in blogDateMap) {
-                    str+='<li>\n' +
-                        '                        <a class="bd-toc-link" onclick="findBlogList('+key+')" href="javascript:;">'+key+'</a>\n' +
+                    str += '<li>\n' +
+                        '                        <a class="bd-toc-link" onclick="findDateBlogList(\'' + key + '\')" href="javascript:;">' + key + '</a>\n' +
                         '                    </li>'
                 }
-                str+='<li>\n' +
-                    '                        <a class="bd-toc-link" onclick="back()" href="javascript:;">返回上级</a>\n' +
-                    '                    </li>'
                 $(".nav").html(str)
             }
         });
     }
+
+
+    function getBlogByNum(num) {
+        let x=num+index
+        if(x<0){
+            x=0;
+        }
+        let blogName;
+        if (blogType==='tag'){
+            if (x>=blogTagList.length){
+                x=blogTagList.length-1;
+            }
+            blogName=  blogTagList[x];
+            findBlog(blogName);
+            index=x;
+            return false;
+        }
+        let list;
+        if (blogType === 'date') {
+            list = blogDateList;
+        }else if (blogType==='search'){
+            list =blogSearchList;
+        }else if (blogType==='new'){
+            list=blogList;
+        }
+        if (x>=list.length){
+            x=list.length-1;
+        }
+        blogName=list[x].title;
+        findBlog(blogName);
+        index=x;
+    }
+    function reindex(blogName) {
+        if (blogType==='tag'){
+            $.each(blogTagList,function (n, v) {
+                v = v.substring(11, v.length - 3)
+                if (v===blogName){
+                    index=n;
+                    return false;
+                }
+            });
+        }
+        let list;
+        if (blogType === 'date') {
+            list = blogDateList;
+        }else if (blogType==='search'){
+            list =blogSearchList;
+        }else if (blogType==='new'){
+            list=blogList;
+        }
+        $.each(list,function (n, v) {
+            let str =v.title.substring(11, v.title.length - 3);
+            if (blogName===str){
+                index=n;
+            }
+        });
+            alert(index);
+    }
+
+
     function findBlog(blogName) {
         $.ajax({
             url: "findBlog",
@@ -283,6 +428,7 @@
             method: "GET",
             dataType: "json",
             success: function (data) {
+                reindex(blogName);
                 let top = data.top;
                 let context = data.context;
                 $(".blog-title").text(top.tags);
@@ -296,45 +442,66 @@
         });
     }
 
-    $(function () {
+    function fadein() {
+        $("#select").fadeIn(300);
+    }
 
+    function fadeOut() {
+        $("#select").fadeOut(500);
+        let key = $("#search-input").val();
+        if (key != null) {
+            $("#search-input").val("");
+        }
+        back();
+    }
+
+
+    function fadeNow() {
+        setTimeout(fadein, 0);
+        setTimeout(fadeOut, 3210);
+    }
+
+    $(function () {
+        $("#per").click(function () {
+            getBlogByNum(-1)
+        });
+        $("#next").click(function () {
+            getBlogByNum(1)
+        });
+
+
+        $("#newest").click(function () {
+            blogType='new';
+        });
+
+        $("input").keydown(function (event) {
+            if (event.which === 13) {
+                searchBack();
+            }
+
+        });
 
         <!-- 控制样式的script -->
-        fadeShow();
 
         $(".blog-nav-item").click(function () {
             $(".blog-nav-item").attr("class", "blog-nav-item");
             $(this).attr("class", "blog-nav-item active");
         });
-        $(function () {
-            $("#look").mouseleave(function () {
-                fadeOut()
-            })
-            $("#look").mouseover(function () {
-                fadein();
-            })
-        })
 
-        function fadein() {
-            $("#select").fadeIn(300);
-        }
+        $("#look").mouseleave(function () {
+            fadeOut()
+        });
+        $("#look").mouseenter(function () {
+            fadein();
+        });
 
-        function fadeOut() {
-            $("#select").fadeOut(300);
-        }
-
-        function fadeShow() {
-            setTimeout(fadein, 3000);
-            setTimeout(fadeOut, 8000);
-        }
-
-        <!--发送请求的script-->
         load();
 
 
     });
 
 </script>
+
 
 </body>
 </html>

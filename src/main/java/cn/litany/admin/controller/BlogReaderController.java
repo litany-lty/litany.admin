@@ -49,6 +49,28 @@ public class BlogReaderController {
 
         return dateBlogMap;
     }
+    @RequestMapping("/searchBlog")
+    public List<Blog> searchBlogList(HttpServletRequest request,String region,String key) {
+        String username = (String) request.getSession().getAttribute("username");
+        List<Blog> resultBlogList=null;
+        if (StringUtils.isBlank(region)){
+            region=OFFICIAL;
+        }
+        if (ALL.equalsIgnoreCase(region)){
+            resultBlogList= blogReader.getAllBlogByKey(username, key);
+        }else if (OFFICIAL.equalsIgnoreCase(region)){
+            resultBlogList= blogReader.getOfficialBlogByKey(username,key);
+        }else if (DRAFT.equalsIgnoreCase(region)){
+            resultBlogList=blogReader.getDraftBlogByKey(username,key);
+        }
+        return resultBlogList;
+    }
+
+    @RequestMapping("/tagBlog")
+    public Map<String, List<String>> getBlogTagGroup(HttpServletRequest request, String region) {
+
+        return blogReader.findTagBlogList((String) request.getSession().getAttribute("username"),region);
+    }
 
 
     @RequestMapping("/findBlog")

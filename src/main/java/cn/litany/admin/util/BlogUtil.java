@@ -16,8 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static cn.litany.admin.constant.BlogConstant.MARKDOWN_TYPE;
-import static cn.litany.admin.constant.BlogConstant.TOP;
+import static cn.litany.admin.constant.BlogConstant.*;
 
 /**
  * @author Litany
@@ -25,6 +24,44 @@ import static cn.litany.admin.constant.BlogConstant.TOP;
 public class BlogUtil {
     private static Pattern p = Pattern.compile("(\\d{4})-(\\d{1,2})-(\\d{1,2})");
 
+
+    public static Map<String, List<String>> getTagBlogMap(String dirPath) {
+        File[] blogFiles = getFilesByDirPath(dirPath);
+        HashMap<String, List<String>> blogTagMap = new HashMap<>(16);
+        if (blogFiles == null || blogFiles.length < 1) {
+            return null;
+        }
+        for (File blogFile : blogFiles) {
+            Top top = getTopByBlogFile(blogFile);
+            String tagString = top.getTags();
+            String blogName = blogFile.getName();
+
+            if (StringUtils.isBlank(tagString)){
+                blogTagMap.put("#未知分类", Collections.singletonList(blogName));
+            }
+
+            else if (StringUtils.isNotBlank(tagString)) {
+                String[] tags = null;
+                if (tagString.contains(SPLIT1)) {
+                    tags = tagString.split(SPLIT1);
+                } else if (tagString.contains(SPLIT2)) {
+                    tags = tagString.split(SPLIT2);
+                } else {
+                    tags = new String[]{tagString};
+                }
+
+                for (String tag : tags) {
+                    List<String> blogNameList = blogTagMap.get(tag);
+                    if (blogNameList == null) {
+                        blogNameList = new ArrayList<>();
+                    }
+                    blogNameList.add(blogName);
+                    blogTagMap.put(tag, blogNameList);
+                }
+            }
+        }
+        return blogTagMap;
+    }
 
     public static List<Blog> getNewBlogListByNum(Map<String, List<Blog>> groupDateBlogList, int number) {
         AtomicInteger index = new AtomicInteger();
@@ -100,6 +137,22 @@ public class BlogUtil {
         return blogList;
     }
 
+    private static Top getTopByBlogFile(File blogFile) {
+        Top top = null;
+        try {
+            String s = FileUtils.readFileToString(blogFile, StandardCharsets.UTF_8);
+            int i = s.indexOf(TOP, 2);
+            int topIndex = i + 3;
+            if (i != -1) {
+                String topString = s.substring(0, topIndex);
+                top = getTop(topString);
+            }
+        } catch (IOException e) {
+        }
+        return top;
+
+    }
+
     public static File[] getFilesByDirPath(String dirPath) {
         File dir = new File(dirPath);
         if (dir.isDirectory()) {
@@ -157,7 +210,7 @@ public class BlogUtil {
 
     }
 
-    public static Top getTop(String topString) {
+    private static Top getTop(String topString) {
         topString = cleanString(topString);
         String[] split = topString.split("&LITANY&");
         StringBuilder sb = new StringBuilder("{");

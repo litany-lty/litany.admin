@@ -115,6 +115,11 @@ public class BlogReaderImpl implements BlogReader {
         return BlogUtil.getNewBlogListByNum(blogGroupByDate,10);
     }
 
+    @Override
+    public Map<String, List<String>> findTagBlogList(String username, String region) {
+        return null;
+    }
+
 
     private List<Blog> findInBlogListByKey(List<Blog> blogList, String key) {
         List<Blog> blogKeyList = new ArrayList<Blog>();

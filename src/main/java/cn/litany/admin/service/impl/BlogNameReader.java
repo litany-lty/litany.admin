@@ -49,7 +49,7 @@ public class BlogNameReader implements BlogReader {
 
     @Override
     public List<Blog> getOfficialBlogByKey(String username, String key) {
-        List<Blog> allOfficialBlog = getAllBlog(username);
+        List<Blog> allOfficialBlog = getOfficialBlog(username);
         return findInBlogByKey(allOfficialBlog, key);
     }
 
@@ -121,20 +121,46 @@ public class BlogNameReader implements BlogReader {
         return BlogUtil.getNewBlogListByNum(blogGroupByDate, 10);
     }
 
-    private void mergeBlogMap(Map<String, List<Blog>> offMap, Map<String, List<Blog>> draftMap) {
+    @Override
+    public Map<String, List<String>> findTagBlogList(String username, String region) {
+        Map<String, List<String>> tagBlogMap=null;
+        if (StringUtils.isBlank(region) || OFFICIAL.equalsIgnoreCase(region)) {
+            tagBlogMap = BlogUtil.getTagBlogMap(configUtil.getUserOfficialPath(username));
+        } else if (DRAFT.equalsIgnoreCase(region)) {
+            tagBlogMap = BlogUtil.getTagBlogMap(configUtil.getUserDraftPath(username));
+        } else if (ALL.equalsIgnoreCase(region)) {
+            tagBlogMap = mergeBlogMap(BlogUtil.getTagBlogMap(configUtil.getUserOfficialPath(username)), BlogUtil.getTagBlogMap(configUtil.getUserDraftPath(username)));
+        }
+        return tagBlogMap;
+    }
+
+    private <t> Map<String, List<t>> mergeBlogMap(Map<String, List<t>> offMap, Map<String, List<t>> draftMap) {
+        if (offMap==null &&draftMap==null){
+            return null;
+        }
+        if (draftMap==null){
+            return offMap;
+        }
+        if (offMap==null){
+            return draftMap;
+        }
+
         Set<String> draftKey = draftMap.keySet();
+
+        HashMap<String, List<t>> allMap = new HashMap<>(offMap.size()+draftMap.size());
+        allMap.putAll(offMap);
         draftKey.forEach((s) -> {
             offMap.forEach((k, v) -> {
-                if (offMap.get(s)!=null){
+                if (offMap.get(s) != null) {
                     v.addAll(draftMap.get(s));
-                    offMap.put(k,v);
+                    allMap.put(k, v);
 
-                }else
-                if (offMap.get(s)==null &&draftMap.get(s)!=null){
-                    offMap.put(s,draftMap.get(s));
+                } else if (offMap.get(s) == null && draftMap.get(s) != null) {
+                    allMap.put(s, draftMap.get(s));
                 }
             });
         });
+        return allMap;
     }
 
     private List<Blog> findInBlogByKey(List<Blog> blogList, String key) {

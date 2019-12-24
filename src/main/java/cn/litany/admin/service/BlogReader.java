@@ -100,10 +100,18 @@ public interface BlogReader {
 
     /**
      * 用于页面加载默认的几篇博客
+     *
      * @param username 用户名
-     * @param region 范围
+     * @param region   选择区域
      * @return: 返回所有最新的10篇博客
      */
-    List<Blog> findNewBlogList(String username,String region);
+    List<Blog> findNewBlogList(String username, String region);
 
+    /**
+     * 用于页面加载所有tag分类
+     * @param username 用户名
+     * @param region    选择区域
+     * @return: 返回所有博客的Tag标签,所有标签对应的博客名
+     */
+    Map<String, List<String>> findTagBlogList(String username, String region);
 }
