@@ -2,10 +2,7 @@
  * Globals
  */
 
-body {
-  font-family: Georgia, "Times New Roman", Times, serif;
-  color: #555;
-}
+
 
 h1, .h1,
 h2, .h2,
@@ -13,12 +10,19 @@ h3, .h3,
 h4, .h4,
 h5, .h5,
 h6, .h6 {
-  margin-top: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-top: 15px;
+  font-family: "BlinkMacSystemFont", Helvetica, Arial, sans-serif;
   font-weight: normal;
   color: #333;
 }
-
+.blog-post>p{margin: 20px;}
+.blog-post>ul{margin: 30px;}
+.blog-post>ol{margin: 30px;}
+.blog-post>pre{margin: 10px}
+#blogContent>p{margin: 20px;}
+#blogContent>ul{margin: 30px;}
+#blogContent>ol{margin: 30px;}
+#blogContent>pre{margin: 10px}
 
 /*
  * Override Bootstrap's default container.
@@ -138,6 +142,11 @@ h6, .h6 {
  */
 
 .blog-post {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Arial", "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "Microsoft JhengHei", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif;
+  line-height: 1.7;
+  font-size: 16px;
+  color: #404040;
+  overflow-x: hidden;
   margin-bottom: 60px;
 }
 .blog-post-title {

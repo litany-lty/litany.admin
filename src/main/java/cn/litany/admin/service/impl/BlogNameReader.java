@@ -99,7 +99,7 @@ public class BlogNameReader implements BlogReader {
         }
 
         for (File blog : blogList) {
-            if (StringUtils.contains(blog.getName().replace(" ", ""), blogName.replace(" ", ""))) {
+            if (StringUtils.contains(blog.getName().replace(" ", ""), blogName.replace(" ", "").replace("+",""))) {
                 return BlogUtil.parseBlogFile(blog);
             }
         }

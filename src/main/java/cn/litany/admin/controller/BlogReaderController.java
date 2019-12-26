@@ -5,7 +5,9 @@ import cn.litany.admin.service.BlogReader;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,18 +75,15 @@ public class BlogReaderController {
     }
 
 
-    @RequestMapping("/findBlog")
-    public Blog findOfficialBlog(String username,String blogName,String region) {
+    @RequestMapping(value = "/findBlog/{region}/{blogName}",method = RequestMethod.GET)
+    public Blog findBlog(HttpServletRequest request,@PathVariable String blogName, @PathVariable String region) {
         if (StringUtils.isBlank(region)){
             region=OFFICIAL;
         }
-        return blogReader.getBlogByName(username,blogName,region);
+        return blogReader.getBlogByName((String) request.getSession().getAttribute("username"),blogName,region);
     }
 
-    @RequestMapping("/findDarBlog")
-    public Blog findDraftBlog(String username,String blogName) {
-        return blogReader.getBlogByName(username,blogName,DRAFT);
-    }
+
 
     @RequestMapping("/newest")
     public List<Blog> getNewBlogList(String username,String region) {

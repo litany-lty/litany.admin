@@ -80,8 +80,8 @@
                 </svg>
             </button>
             <a class="blog-nav-item" id="index" href="javascript:;">Home</a>
-            <a class="blog-nav-item" id="blog" href="javascript:;">Blog</a>
-            <a class="blog-nav-item active" id="about-me" href="javascript:;">About</a>
+            <a class="blog-nav-item active" id="blog" href="javascript:;">Blog</a>
+            <a class="blog-nav-item" id="about-me" href="javascript:;">About</a>
         </nav>
     </div>
 </div>
@@ -301,7 +301,42 @@
             "                    </li>")
     }
 
+    function getArg(key) {
+
+        let args = {};
+
+        if (location.search.split('?') < 2) {
+
+            return null;
+
+        }
+
+        let search = decodeURIComponent(location.search);
+
+        search = search.split('?')[1].split('&');
+
+        search.forEach(function (item) {
+
+            let kv = item.split('=');
+
+            args[kv[0]] = kv[1];
+
+        });
+
+        if (!args[key]) {
+
+            args[key] = '';
+
+        }
+
+        return args[key];
+
+    }
+
     function load() {
+        let regionArg = getArg('region');
+        let blogArg = getArg('blog');
+
         $.ajax({
             url: "newest",
             data: {username: "Litany-lty", region: region},
@@ -315,8 +350,12 @@
                 $.each(data, function (n, v) {
                     let title = v.title;
                     title = title.substring(11, title.length - 3);
-                    if (n === 0) {
-                        findBlog(title)
+                    if (regionArg !== null && blogArg != null) {
+                        find(regionArg, blogArg);
+                    } else {
+                        if (n === 0) {
+                            findBlog(title)
+                        }
                     }
                     str += '<li ><a id="findBlog" href="javascript:;" onclick="findBlog(\'' + title + '\')">' + title + '</a></li>';
                 });
@@ -474,15 +513,19 @@
         });
     }
 
-
     function findBlog(blogName) {
+        location.href = 'http://' + location.host + '/blog/' + region + '/' + blogName;
+    }
+
+    function find(reg, blogName) {
         $.ajax({
-            url: "/findBlog/" + region + "/" + blogName,
+            url: "/findBlog/" + reg + "/" + blogName,
             data: {},
             method: "GET",
             dataType: "json",
             success: function (data) {
                 name = blogName;
+                region = reg;
                 reindex(blogName);
                 let top = data.top;
                 let context = data.context;
@@ -493,7 +536,11 @@
                 let s = context.note + context.content;
                 s = marked(s);
                 $("#blogContent").html(s);
-                hljs.initHighlighting();
+                let blocks = document.querySelectorAll('pre code');
+                blocks.forEach((block) => {
+                    hljs.highlightBlock(block)
+                })
+
             }
         });
     }
@@ -526,13 +573,13 @@
         });
 
         $("#about-me").click(function () {
-            location.href="about.html";
+            location.href = "about.html";
         });
         $("#blog").click(function () {
-            location.href="blog.html";
+            location.href = "blog.html";
         });
         $("#index").click(function () {
-            location.href="index.html";
+            location.href = "index.html";
         });
 
         $("#newest").click(function () {
